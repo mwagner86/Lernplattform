@@ -1,0 +1,18 @@
+{
+  "platformTitle": "Klausur-Lernplattform",
+  "platformSubtitle": "Modulare Lernunterlagen aus Markdown",
+  "defaultModule": "beispiel",
+  "modules": [
+    {
+      "id": "beispiel",
+      "title": "Beispielmodul",
+      "subtitle": "Hochschule · Semester · Dozent:in",
+      "brandMark": "BSP",
+      "contentDir": "./Inhalte",
+      "indexFile": "00-Index.md",
+      "examFile": "Altklausur.md",
+      "cheatsheetFile": "Spickzettel.md",
+      "cheatsheetFiles": ["Spickzettel.md"]
+    }
+  ]
+}

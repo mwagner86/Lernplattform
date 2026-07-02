@@ -1,0 +1,9 @@
+node_modules/
+dist/
+src/content.generated.json
+
+# Lokale Claude-Code-Einstellungen (nicht committen)
+.claude/settings.local.json
+
+# OS-/Editor-Artefakte
+.DS_Store

@@ -1,0 +1,27 @@
+{
+  "name": "lernplattform-template",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Wiederverwendbares Template der offline-fähigen Lernplattform: Markdown-Inhalte in ./Inhalte, Build zu einer einzigen dist/index.html.",
+  "scripts": {
+    "sync": "node scripts/build-content.mjs",
+    "dev": "node scripts/build-content.mjs && vite",
+    "build": "node scripts/build-content.mjs && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "highlight.js": "^11.10.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-anchor": "^9.2.0",
+    "mermaid": "^11.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.28.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-plugin-singlefile": "^2.0.3"
+  }
+}
