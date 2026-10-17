@@ -24,7 +24,7 @@ export default function Home() {
           <p className="eyebrow">{mod.subtitle}</p>
           <h1>{mod.title}</h1>
           <p className="hero-lead">
-            Deine Single Source of Truth für die Klausur: alle Kapitel, Karteikarten
+            Deine Single Source of Truth für die Prüfung: alle Kapitel, Karteikarten
             zum Selbsttest und der Spickzettel — vollständig offline nutzbar.
           </p>
           <div className="hero-actions">

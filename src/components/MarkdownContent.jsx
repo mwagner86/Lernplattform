@@ -67,11 +67,11 @@ export default function MarkdownContent({ markdown, moduleId, slugSet }) {
         })
     })
 
-    // Klausurrelevanz-/Hinweis-Callouts hervorheben.
+    // Klausur-/Prüfungsrelevanz- und Hinweis-Callouts hervorheben.
     root.querySelectorAll('blockquote').forEach((bq) => {
       const text = bq.textContent || ''
       bq.classList.add('callout')
-      if (/^\s*Klausurrelevanz/i.test(text)) bq.classList.add('callout-exam')
+      if (/^\s*(Klausur|Prüfungs)relevanz/i.test(text)) bq.classList.add('callout-exam')
       else bq.classList.add('callout-note')
     })
 

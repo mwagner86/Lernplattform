@@ -6,6 +6,7 @@
   "description": "Wiederverwendbares Template der offline-fähigen Lernplattform: Markdown-Inhalte in ./Inhalte, Build zu einer einzigen dist/index.html.",
   "scripts": {
     "sync": "node scripts/build-content.mjs",
+    "quellen": "node scripts/quellen-status.mjs",
     "dev": "node scripts/build-content.mjs && vite",
     "build": "node scripts/build-content.mjs && vite build",
     "preview": "vite preview"

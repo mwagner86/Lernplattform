@@ -81,13 +81,13 @@ export function renderMarkdown(markdown, { moduleId, slugSet } = {}) {
   return md.render(markdown, { moduleId, slugSet })
 }
 
-// Karteikarten aus dem Abschnitt "Klausurfragen — Musterantworten" extrahieren.
+// Karteikarten aus dem Abschnitt "Klausurfragen — Musterantworten" (oder "Prüfungsfragen — …") extrahieren.
 export function extractFlashcards(markdown) {
   const lines = markdown.split('\n')
   let start = -1
   let end = lines.length
   for (let i = 0; i < lines.length; i++) {
-    if (/^##\s+Klausurfragen/i.test(lines[i])) { start = i + 1; continue }
+    if (/^##\s+(Klausur|Prüfungs)fragen/i.test(lines[i])) { start = i + 1; continue }
     if (start >= 0 && /^##\s+/.test(lines[i])) { end = i; break }
   }
   if (start < 0) return []

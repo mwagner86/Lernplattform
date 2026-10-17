@@ -72,9 +72,11 @@ eine Lernwebsite gebaut. Maßgebliche Details & Konventionen stehen in **`TEMPLA
 
 ### Datenfluss
 
-`Quellen/` (Rohmaterial, **Eingabe**) → Skill `lernplattform-befuellen` → `contentDir`
-aus `content.config.json` (generierte `*.md`, **Ausgabe**, Standard `Inhalte/`) →
-`npm run build` → `dist/index.html`.
+`Quellen/` und die externen Pfade aus `quellen.config.json` (Rohmaterial, **Eingabe**) →
+Skill `lernplattform-befuellen` → `contentDir` aus `content.config.json` (generierte
+`*.md`, **Ausgabe**, Standard `Inhalte/`) → `npm run build` → `dist/index.html`. Welche
+Quellen eingearbeitet sind, steht in `quellenstand.json`; `npm run quellen` zeigt, was
+seitdem neu oder geändert ist.
 
 **Single Source of Truth:** Inhalt lebt in den Markdown-Dateien des `contentDir`, **nie**
 im React-Code duplizieren. Nach Inhaltsänderung `npm run build`, dann ggf. Root-Kopie der
@@ -85,13 +87,17 @@ im React-Code duplizieren. Nach Inhaltsänderung `npm run build`, dann ggf. Root
 - **Fakten-Wahrheitsquelle:** `Quellen/Skript/` (**primär**) → `Quellen/Vorlesungen/`
   (ergänzend). Fachaussagen „wo möglich aus dem Skript"; allgemeingültiges Wissen nur bei
   **offensichtlichen Fehlern oder Lücken**, dann mit `(Ergänzung)` markiert.
-- **Prüfungs-Gewicht (Priorisierung ⭐ + Fragenkatalog):** `Altklausuren/` +
-  `Musterklausuren/` haben **höchstes Gewicht**; `Gedächtnisprotokolle/` liefern
-  zusätzliche Fragen; `Abgaben/` (bewertete Zwischenabgaben) zeigen Bewertungskriterien &
-  typische Fehler; `Zusammenfassungen/` = optionale eigene Notizen.
+- **Prüfungs-Gewicht (Priorisierung ⭐ + Fragenkatalog)** nach Profil: **mit**
+  Alt-/Musterklausuren haben sie das **höchste Gewicht**; **ohne** (z. B. mündliche
+  Prüfung) die Prüfungshinweise des Dozenten aus `Sprechstunden/`, dann die dort
+  besprochenen Aufgaben, dann `Übungen/`. `Gedächtnisprotokolle/` liefern zusätzliche
+  Fragen; `Abgaben/` (bewertete Zwischenabgaben) zeigen Bewertungskriterien & typische
+  Fehler; `Zusammenfassungen/` = optionale eigene Notizen. Details im Skill.
 
 ### Neues Modul/Fach
 
-Template kopieren → `Quellen/` befüllen → `content.config.json` anpassen (Titel, `id`,
+Template kopieren → `Quellen/` befüllen oder externe Ordner in `quellen.config.json`
+eintragen (dort auch `pruefung.form`) → `content.config.json` anpassen (Titel, `id`,
 `brandMark`) → Skill `/lernplattform-befuellen` starten (oder Inhalte von Hand pflegen) →
-bauen. Der Skill reist in `.claude/` mit — Claude Code dafür **im Template-Ordner** starten.
+bauen. Neues Material später: Skill erneut starten (Update-Modus). Der Skill reist in
+`.claude/` mit — Claude Code dafür **im Template-Ordner** starten.
