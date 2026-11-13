@@ -78,7 +78,7 @@ export default function ChapterPage() {
           <div className="chapter-head">
             <p className="eyebrow">
               {chapter.type === 'cheatsheet'
-                ? 'Spickzettel'
+                ? 'Hilfsmittel'
                 : chapter.type === 'overview'
                 ? 'Übersicht'
                 : chapter.type === 'exam'

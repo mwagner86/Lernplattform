@@ -5,7 +5,8 @@ description: >-
   die Ordner unter Quellen/ und die externen Pfade aus quellen.config.json (Skript,
   Vorlesungen, Sprechstunden, Übungen, Alt- und Musterklausuren, Gedächtnisprotokolle,
   Abgaben, Zusammenfassungen) —, generiert daraus die Plattform-Markdown im contentDir
-  (Inhalte/*.md) und baut zu dist/index.html. Gewichtet nach Prüfungsprofil: mit Alt- oder
+  (Inhalte/*.md) mit den tragenden Abbildungen aus Skript und Vorlesungen und baut zu
+  dist/index.html. Gewichtet nach Prüfungsprofil: mit Alt- oder
   Musterklausuren zählen sie am meisten, ohne (z. B. mündliche Prüfung) die Hinweise des
   Dozenten und die besprochenen Aufgaben. Fachantworten aus dem Skript, Allgemeinwissen nur
   bei Lücken/Fehlern (als "(Ergänzung)"). Update-Modus: arbeitet nur neue oder geänderte
@@ -40,6 +41,10 @@ Plattform Inhalte/Karten nicht.
    Modellwissen **nur** bei *offensichtlichen Fehlern* oder *fehlenden Infos* ergänzen — und
    solche Stellen mit **`(Ergänzung)`** markieren. Nichts erfinden; bei echter Unsicherheit
    lieber Lücke markieren/nachfragen.
+
+Dazu ein Grundsatz: **Wo eine Abbildung aus Skript oder Vorlesung den Stoff trägt, zeigt die
+Plattform sie** — Auswahl, Herkunft und Ablage im Abschnitt *Abbildungen aus Skript und
+Vorlesungen*.
 
 ## Prüfungsprofil
 
@@ -121,6 +126,9 @@ Für jede Datei Text gewinnen, Zwischenergebnisse im Scratchpad:
   unten umsetzen.
 - Liegt das Skript als Markdown **und** PDF vor, ist das Markdown führend; das PDF dient zum
   Gegenprüfen von Zahlen, Formeln und Abbildungsnummern.
+- **Abbildungen erfassen:** beim Lesen notieren, welche Abbildungen es gibt — das
+  Abbildungsverzeichnis des Skript-PDFs, `![[…]]` in den Notizen, Folien, in Aufzeichnungen
+  gezeigte Bilder —, jeweils mit Fundstelle. Auswahl und Ablage: Abschnitt *Abbildungen*.
 - **Verify:** Jede Quelle hat nicht-leeren Text. Scan-/Bild-PDFs (kein Text) melden — OCR
   nötig oder überspringen.
 
@@ -157,7 +165,7 @@ nicht blind zerstören — dann Ablauf B).
 - **`NN-<Kapitel>.md`** je Kapitel — Kopf mit Stand der Lehrveranstaltung und, falls
   vorhanden, den Hinweisen des Dozenten als Callout `> **Prüfungsrelevanz:** …` (bzw.
   `> **Klausurrelevanz:** …` bei schriftlicher Prüfung). Dann die geerdete Zusammenfassung
-  (⭐-Themen tiefer), am Ende `## Prüfungsfragen — Musterantworten` (mündlich) bzw.
+  (⭐-Themen tiefer) mit den tragenden Abbildungen an ihrer Stelle, am Ende `## Prüfungsfragen — Musterantworten` (mündlich) bzw.
   `## Klausurfragen — Musterantworten` (schriftlich) mit Karten `**1. …**`, `**2. …**`
   (kapitel-intern fortlaufend). Wo hilfreich: Tabellen, `mermaid`-Diagramme, Worked
   Examples.
@@ -167,8 +175,9 @@ nicht blind zerstören — dann Ablauf B).
 - **`cheatsheetFile`** — 1-Seiten-Verdichtung: Formeln, Listen, Kernbegriffe,
   ⭐-Schwerpunkte, die wichtigsten Hinweise des Dozenten.
 - Quellentreue-Regel + `(Ergänzung)`-Marker durchgängig anwenden.
-- **Verify:** `node scripts/build-content.mjs` läuft fehlerfrei und zeigt die erwartete
-  Seitenzahl; Stichprobe: Karteikarten werden erkannt (siehe `extractFlashcards`).
+- **Verify:** `node scripts/build-content.mjs` läuft fehlerfrei, zeigt die erwartete
+  Seitenzahl und meldet kein `! Bild nicht gefunden`; Stichprobe: Karteikarten werden erkannt
+  (siehe `extractFlashcards`).
 
 ### A5. `content.config.json` anpassen
 `platformTitle`, Modul-`title`/`subtitle`/`brandMark`/`id`, `examFile` aus Modulname und
@@ -193,6 +202,8 @@ Erst wenn A6 fehlerfrei war: **`npm run quellen -- --speichern`**. Ab jetzt meld
      neue Hinweise, ⭐), die Prüfungsseite, ggf. der Spickzettel;
    - geänderte **Übung/Musterlösung** → Karten des Kapitels und der Prüfungsseite;
    - geändertes **Skript** → Zusammenfassung des Kapitels;
+   - neue **Folien** oder neues **Skriptkapitel** → auch die Abbildungen (Abschnitt
+     *Abbildungen*); in Vorlesung oder Sprechstunde gezeigte Bilder bekommen Bildfragen;
    - neues **Gedächtnisprotokoll / Probeprüfung / Altklausur** → Prüfungsseite und Ranking
      aller Kapitel (kann das Profil von B nach A wechseln — dann die Gewichtung neu
      bewerten und das dem User sagen).
@@ -207,10 +218,61 @@ Erst wenn A6 fehlerfrei war: **`npm run quellen -- --speichern`**. Ab jetzt meld
 7. **Bericht an den User:** je Seite, was sich geändert hat (neue ⭐, neue Karten, neue
    Hinweise, Abweichungen).
 
+## Abbildungen aus Skript und Vorlesungen
+
+Die Plattform arbeitet **mit den Bildern des Kurses**: Wo das Skript oder die Folien eine
+Abbildung haben, die einen Stoff trägt, steht sie neben dem Text — das Modell, das Diagramm, die
+Kurve, die man in der Prüfung wiedererkennen und erklären soll. Der Text erklärt trotzdem, was
+das Bild zeigt; Suche und Karteikarten lesen nur Text.
+
+**Aufnehmen:**
+
+- Abbildungen, die der Dozent in Vorlesung, Sprechstunde oder Prüfungsvorbereitung gezeigt oder
+  abgefragt hat — sie zählen wie ein Hinweis des Dozenten und bekommen eine Bildfrage (unten),
+- Abbildungen zu ⭐-Themen und zu besprochenen Aufgaben,
+- Modelle und Abläufe, die als Bild schneller zu erfassen sind als als Text: Vorgehensmodelle,
+  Organigramme, Netzpläne, Kurven, Pyramiden, Matrizen.
+
+**Nicht als Bild:** reine Textfolien und Tabellen (abtippen, ein Bild höchstens zusätzlich),
+Formeln (als Unicode und Inline-Code), Deko, Logos, Fotos ohne Inhalt. Gibt es keine Vorlage,
+darf ein `mermaid`-Diagramm den Ablauf nachbauen.
+
+**Woher:**
+
+- **Obsidian-Notizen:** eingebettete Bilder `![[datei.png]]` — die Datei im Vault suchen (meist
+  im `images/`-Ordner des Moduls); die Bildunterschrift steht oft in der Zeile darunter
+  (`*Abbildung 3.3.4.1: …*`).
+- **PDF (Skript, Folien):** eingebettete Grafiken mit `pdfimages -list <pdf>` finden und mit
+  `pdfimages -png -f <S> -l <S> <pdf> <präfix>` holen; Vektorgrafiken oder ganze Folien mit
+  `pdftoppm -png -r 150 -f <S> -l <S> <pdf> <präfix>` rendern und zuschneiden.
+- **PPTX:** Die Bilder liegen in `ppt/media/` (`unzip -j <datei> 'ppt/media/*' -d <ordner>`).
+- **Aufzeichnungen:** Standbild mit `ffmpeg -ss <hh:mm:ss> -i <video> -frames:v 1 <bild>.png`,
+  dann zuschneiden; die Zeitmarke ist die Fundstelle.
+
+**Ablage:** `<contentDir>/bilder/<quelle>-<nummer>-<thema>.<webp|png>`, klein, ohne Leerzeichen
+und Umlaute — etwa `skript-3-3-4-1-vorgangsknoten.webp` oder `folie-12-use-case.webp`.
+Verkleinern auf höchstens etwa 1000 px Breite, am besten als WebP:
+`ffmpeg -i <ein>.png -vf "scale='min(1000,iw)':-2" -c:v libwebp -quality 80 <aus>.webp`
+(ohne ffmpeg: `cwebp`, sonst PNG behalten). Richtwert unter 100 KB je Bild — jedes Bild steckt
+als `data:`-URI im HTML.
+
+**Einbetten:** in einer eigenen Zeile direkt beim Abschnitt, die Bildunterschrift nennt, was zu
+sehen ist, und die Fundstelle (Skriptabschnitt und Abbildungsnummer oder Vorlesung und Folie):
+`![Vorgangsknoten mit FAZ, FEZ, SAZ, SEZ (Skript 3.3.4, Abbildung 3.3.4.1)](bilder/skript-3-3-4-1-vorgangsknoten.webp)`
+
+**Bildfragen:** Prüft der Dozent an Abbildungen (mündlich typisch: „Was sehen Sie da?"),
+gehören die Bilder auch auf Karteikarten — Bild in der fett gesetzten Fragezeile, Alternativtext
+ohne Lösung, Rückseite mit dem Namen der Abbildung, einer Kurzantwort, seinen Nachfragen und der
+Fundstelle (Format in `TEMPLATE.md`). Sind es mehr als eine Handvoll, eine eigene Seite
+`Abbildungen.md` anlegen und in `cheatsheetFiles` eintragen.
+
+- **Verify:** `npm run build` meldet kein `! Bild nicht gefunden`; Stichprobe im Browser, auch
+  im Dark Mode. Ein Repo mit Kursbildern bleibt **privat**.
+
 ## Obsidian-Quellen umsetzen
 
-Der Renderer kennt nur CommonMark mit Tabellen, `mermaid` und Callouts per Blockquote — keine
-Obsidian-Syntax, keine Formeln, keine eingebetteten Bilder. Beim Übernehmen aus
+Der Renderer kennt CommonMark mit Tabellen, `mermaid`, Callouts per Blockquote und Bildern aus
+`<contentDir>/bilder/` — keine Obsidian-Syntax, keine Formeln. Beim Übernehmen aus
 Vault-Notizen:
 
 - **Frontmatter** weglassen.
@@ -221,9 +283,11 @@ Vault-Notizen:
   Lösungen (`> [!NOTE]-`) auflösen.
 - **Formeln** (`$…$`, `$$…$$`) → Unicode und Inline-Code, z. B. `MM = A · Size^E · ∏ EMᵢ`;
   längere Rechnungen als Tabelle (Schritt | Rechnung | Ergebnis).
-- **Bilder** (`![[bild.png]]`, `[Abbildung: …]`) werden nicht übernommen. Was das Bild
-  zeigt, als Text, Tabelle oder `mermaid`-Diagramm nachbauen, wenn es für das Verständnis
-  nötig ist; sonst weglassen.
+- **Bilder** (`![[bild.png]]`) nach dem Abschnitt *Abbildungen* übernehmen: Datei im Vault
+  suchen, verkleinert nach `<contentDir>/bilder/` legen, als `![Bildunterschrift](bilder/…)`
+  einbetten. Was nur Text oder Tabelle ist, abtippen. Platzhalter wie `[Abbildung: …]` ohne
+  Datei als Text, Tabelle oder `mermaid`-Diagramm nachbauen, wenn es für das Verständnis
+  nötig ist.
 - **Zeitmarken** aus Transkripten (`[00:21:35]`) als Fundstelle behalten:
   „(Sprechstunde 12.10.2026, 00:21:35)".
 - Interne Arbeitsvermerke der Notizen (Korrekturlese-Protokolle, Whisper-Prompts,
@@ -234,6 +298,8 @@ Vault-Notizen:
   gilt; Abweichung im Kapitel vermerken.
 - **Nachvollziehbarkeit.** Ergänztes Wissen `(Ergänzung)`; erfundene Fakten sind ein Fehler.
   Hinweise des Dozenten immer mit Datum (und Zeitmarke, falls vorhanden).
+- **Bilder tragen mit, ersetzen keinen Text.** Tragende Abbildungen aus Skript und Vorlesungen
+  kommen auf die Plattform (Abschnitt *Abbildungen*); was sie zeigen, steht trotzdem im Text.
 - **Gewichtung sichtbar machen.** ⭐ konsequent nach der Rangfolge des Profils; der
   Fragenkatalog spiegelt reale Prüfungsfragen bzw. die besprochenen Aufgaben.
 - **Lebendes Dokument.** Bei neuem Material Ablauf B statt Neugenerierung; `quellenstand.json`

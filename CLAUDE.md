@@ -76,7 +76,8 @@ eine Lernwebsite gebaut. Maßgebliche Details & Konventionen stehen in **`TEMPLA
 Skill `lernplattform-befuellen` → `contentDir` aus `content.config.json` (generierte
 `*.md`, **Ausgabe**, Standard `Inhalte/`) → `npm run build` → `dist/index.html`. Welche
 Quellen eingearbeitet sind, steht in `quellenstand.json`; `npm run quellen` zeigt, was
-seitdem neu oder geändert ist.
+seitdem neu oder geändert ist. Abbildungen aus Skript und Vorlesungen liegen unter
+`<contentDir>/bilder/` und werden beim Build als `data:`-URI in die Seite eingebettet.
 
 **Single Source of Truth:** Inhalt lebt in den Markdown-Dateien des `contentDir`, **nie**
 im React-Code duplizieren. Nach Inhaltsänderung `npm run build`, dann ggf. Root-Kopie der
@@ -93,6 +94,9 @@ im React-Code duplizieren. Nach Inhaltsänderung `npm run build`, dann ggf. Root
   besprochenen Aufgaben, dann `Übungen/`. `Gedächtnisprotokolle/` liefern zusätzliche
   Fragen; `Abgaben/` (bewertete Zwischenabgaben) zeigen Bewertungskriterien & typische
   Fehler; `Zusammenfassungen/` = optionale eigene Notizen. Details im Skill.
+- **Abbildungen:** Tragende Bilder aus Skript und Vorlesungen kommen neben den Text, gezeigte
+  oder abgefragte Abbildungen zusätzlich als Bildfrage-Karten (Skill, Abschnitt *Abbildungen*).
+  Eine Instanz mit Kursbildern bleibt ein **privates** Repo.
 
 ### Neues Modul/Fach
 

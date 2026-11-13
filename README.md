@@ -16,7 +16,7 @@ npm run build      # -> dist/index.html  (der fertige Export)
 npm run dev        # Entwicklung mit Live-Reload
 ```
 
-`dist/index.html` ist der Export: vollständig inline (JS, CSS, Inhalte, Diagramme),
+`dist/index.html` ist der Export: vollständig inline (JS, CSS, Inhalte, Diagramme, Bilder),
 offline im Browser öffenbar.
 
 ## Inhalte befüllen — zwei Wege
@@ -36,7 +36,10 @@ Konventionen siehe [`TEMPLATE.md`](TEMPLATE.md).
 Zwei Leitregeln des Skills: **(a)** Gewichtung nach Prüfungsprofil — Alt-/Musterklausuren
 haben das höchste Gewicht, ohne sie die Hinweise des Dozenten und die besprochenen Aufgaben
 (prüfungsrelevante Themen `⭐`); **(b)** Fachaussagen werden aus dem `Skript` belegt,
-Allgemeinwissen nur bei Fehlern/Lücken (als `(Ergänzung)`).
+Allgemeinwissen nur bei Fehlern/Lücken (als `(Ergänzung)`). Dazu arbeitet die Plattform mit den
+**Abbildungen aus Skript und Vorlesungen**: Sie stehen neben dem Text, und Bilder, die der
+Dozent zeigt oder abfragt, werden zu Karteikarten mit dem Bild auf der Vorderseite. Eine
+Instanz mit Kursbildern gehört in ein **privates** Repo.
 
 ## Quellordner (`Quellen/` — Eingabe)
 

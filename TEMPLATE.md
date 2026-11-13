@@ -86,7 +86,8 @@ Template/
 │   ├── 01-Erstes-Kapitel.md  #   Kapitel               (Seitentyp: chapter)
 │   ├── 02-Zweites-Kapitel.md #   Kapitel
 │   ├── Altklausur.md         #   Prüfungsfragen         (Seitentyp: exam)
-│   └── Spickzettel.md        #   Spickzettel            (Seitentyp: cheatsheet)
+│   ├── Spickzettel.md        #   Spickzettel            (Seitentyp: cheatsheet)
+│   └── bilder/               #   Abbildungen aus Skript und Folien, beim Build eingebettet
 ├── .claude/skills/lernplattform-befuellen/  # Skill: Quellen/ → Inhalte/ (auto)
 ├── scripts/build-content.mjs # liest Inhalte/*.md → src/content.generated.json
 ├── scripts/quellen-status.mjs # `npm run quellen`: Quellen neu/geändert/entfernt ggü. quellenstand.json
@@ -205,12 +206,24 @@ Regeln, sonst entstehen **stillschweigend null Karten**:
 - Der Abschnitt endet bei der nächsten `##`-Überschrift — Karteikarten-Abschnitt daher
   ans Kapitelende setzen (oder nur einfache Absätze folgen lassen).
 
+**Bildfrage:** Steht ein Bild in der fett gesetzten Fragezeile, erscheint es auf der
+Vorderseite — Abbildung ansehen, erklären, umdrehen. Der Alternativtext darf die Lösung nicht
+verraten:
+
+```markdown
+**3. Was zeigt diese Abbildung? ![Abbildung 3](bilder/skript-1-3-3-wasserfall.webp)**
+
+Antwort: Name der Abbildung, was sie aussagt, Fundstelle im Skript.
+```
+
 ### Seitentypen & Sortierung
 
 Aus der Config abgeleitet: `overview` (= `indexFile`), `chapter` (nummerierte `NN-*.md`),
 `exam` (= `examFile`), `cheatsheet` (aus `cheatsheetFiles`/`cheatsheetFile`). Sidebar-
 und Startseiten-Reihenfolge: **Übersicht → Kapitel (nach Nummer) → Prüfungsseite →
-Spickzettel** (Spickzettel in Config-Reihenfolge).
+Hilfsmittel** (die `cheatsheetFiles` in Config-Reihenfolge). Weitere Hilfsmittel-Seiten, etwa
+`Abbildungen.md` mit Bildfragen, kommen als zusätzliche Einträge in `cheatsheetFiles`; die
+Startseite verlinkt den ersten Eintrag als Spickzettel.
 
 ### Unterstützte Inhalte im Markdown
 
@@ -218,8 +231,20 @@ Tabellen, `mermaid`-Codeblöcke (als Diagramm mit **Zoom** gerendert), Code mit
 Syntax-Highlighting, sowie **Callouts**: ein Blockquote (`>`), der mit
 *Klausurrelevanz* oder *Prüfungsrelevanz* beginnt, wird hervorgehoben dargestellt.
 
-**Nicht** unterstützt: Formeln (`$…$`), eingebettete Bilder und Obsidian-Syntax
-(Wikilinks, `> [!info]`-Callouts). Der Befüll-Skill setzt sie beim Übernehmen um.
+**Bilder:** `![Bildunterschrift mit Fundstelle](bilder/<datei>)` in einer eigenen Zeile. Die
+Dateien liegen unter `<contentDir>/bilder/`; `scripts/build-content.mjs` bettet sie als
+`data:`-URI ein (PNG, JPEG, GIF, WebP), damit `dist/index.html` offline vollständig bleibt.
+Fehlt eine Datei, meldet der Build `! Bild nicht gefunden` und lässt den Verweis stehen.
+Dateinamen ohne Leerzeichen; Bilder auf höchstens etwa 1000 px Breite verkleinern, am besten
+als WebP — jedes Bild steckt im HTML. Weißer Hintergrund und Rahmen kommen aus dem CSS, auch
+im Dark Mode. Wie der Skill Abbildungen aus Skript und Vorlesungen auswählt und ablegt, steht
+in `.claude/skills/lernplattform-befuellen/SKILL.md`, Abschnitt *Abbildungen*.
+
+> Bilder aus Skript und Folien sind Kursmaterial. Ein Repo mit eingebetteten Abbildungen
+> **privat** halten — dieses Template enthält bewusst keine.
+
+**Nicht** unterstützt: Formeln (`$…$`) und Obsidian-Syntax (Wikilinks, Einbettungen
+`![[…]]`, `> [!info]`-Callouts). Der Befüll-Skill setzt sie beim Übernehmen um.
 
 ---
 

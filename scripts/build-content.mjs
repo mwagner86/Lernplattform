@@ -3,8 +3,8 @@
 // die Plattform ist für weitere Module nur durch Editieren der content.config.json
 // erweiterbar (neuer Ordner + Eintrag -> npm run build).
 
-import { readFileSync, writeFileSync, readdirSync } from 'node:fs'
-import { join, dirname, resolve, basename } from 'node:path'
+import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs'
+import { join, dirname, resolve, basename, extname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -79,6 +79,22 @@ function parseIndexDescriptions(md) {
   return map
 }
 
+// Bilder aus <contentDir>/bilder/ als data:-URI einsetzen, damit dist/index.html offline
+// vollständig bleibt: ![Unterschrift](bilder/datei.png)
+const MIME = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.webp': 'image/webp' }
+
+function inlineImages(md, dir) {
+  return md.replace(/!\[([^\]]*)\]\((bilder\/[^)\s]+)\)/g, (all, alt, src) => {
+    const file = join(dir, decodeURIComponent(src))
+    const mime = MIME[extname(file).toLowerCase()]
+    if (!mime || !existsSync(file)) {
+      console.warn(`  ! Bild nicht gefunden: ${src}`)
+      return all
+    }
+    return `![${alt}](data:${mime};base64,${readFileSync(file).toString('base64')})`
+  })
+}
+
 function chapterNumber(filename) {
   const m = filename.match(/^(\d+)/)
   return m ? parseInt(m[1], 10) : null
@@ -121,7 +137,7 @@ for (const mod of config.modules) {
       title: rawTitle,
       shortTitle: shortTitle(rawTitle),
       description: indexDescriptions[file] || fallbackExcerpt(md),
-      markdown: md,
+      markdown: inlineImages(md, dir),
       headings: extractHeadings(md),
       plainText: toPlainText(md),
     })
